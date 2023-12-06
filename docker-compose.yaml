@@ -1,0 +1,32 @@
+version: '1.0.0'
+services:
+# MongoDB 
+  mongodb:
+    image: mongo:latest
+    container_name: mongoDB
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: university_management
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      AUTH: admin
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'my_mongodb_data:/data/db'
+
+  # mongo express
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: university_management
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_ADMINSERVER: mongodb
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongodb
+volumes:
+  my_mongodb_data:
+    driver: 'local'
